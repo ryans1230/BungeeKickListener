@@ -1,0 +1,4 @@
+name: BungeeKickListener
+version: ${project.version}
+main: me.ryans1230.bungeekicklistener.BungeeKickListener
+author: ryans1230

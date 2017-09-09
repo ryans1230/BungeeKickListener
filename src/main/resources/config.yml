@@ -1,0 +1,5 @@
+fallback-server: lobby
+ban-check: true
+list:
+  - restarting
+  - kicked
