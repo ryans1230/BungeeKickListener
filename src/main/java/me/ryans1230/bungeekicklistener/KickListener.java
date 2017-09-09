@@ -25,8 +25,10 @@ public class KickListener implements Listener {
             e.setCancelled(true);
 
             if (plugin.banCheck) {
-                e.getPlayer().disconnect(e.getKickReasonComponent());
-                return;
+                if(reason.contains("banned")) {
+                    e.getPlayer().disconnect(e.getKickReasonComponent());
+                    return;
+                }
             }
 
             if (plugin.reasonList.contains(reason)) {
