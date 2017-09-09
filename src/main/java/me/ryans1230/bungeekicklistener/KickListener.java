@@ -16,22 +16,26 @@ public class KickListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onServerKickEvent(ServerKickEvent e) {
         ServerInfo fallback = plugin.fallback;
-        String reason = BaseComponent.toLegacyText(e.getKickReasonComponent());
-        String from = e.getKickedFrom().getName();
-        e.setCancelServer(fallback);
-        e.setCancelled(true);
+        if (fallback == null) {
+            plugin.getLogger().severe("Unable to find the specified fallback server!!");
+        } else {
+            String reason = BaseComponent.toLegacyText(e.getKickReasonComponent());
+            String from = e.getKickedFrom().getName();
+            e.setCancelServer(fallback);
+            e.setCancelled(true);
 
-        if(plugin.banCheck) {
-            e.getPlayer().disconnect(e.getKickReasonComponent());
-            return;
-        }
-
-        if(plugin.reasonList.contains(reason)) {
-            if(!from.equals(fallback.getName())) {
-                e.getPlayer().sendMessage(new ComponentBuilder(ChatColor.RED + from + " is most likely restarting, you have been connected to \"" + fallback.getName() + "\"").create());
+            if (plugin.banCheck) {
+                e.getPlayer().disconnect(e.getKickReasonComponent());
                 return;
             }
+
+            if (plugin.reasonList.contains(reason)) {
+                if (!from.equals(fallback.getName())) {
+                    e.getPlayer().sendMessage(new ComponentBuilder(ChatColor.RED + from + " is most likely restarting, you have been connected to \"" + fallback.getName() + "\"").create());
+                    return;
+                }
+            }
+            e.getPlayer().sendMessage(new ComponentBuilder(ChatColor.RED + "Your connection to " + e.getKickedFrom().getName() + " was interrupted. You have been connected to: " + e.getCancelServer().getName()).color(ChatColor.RED).create());
         }
-        e.getPlayer().sendMessage(new ComponentBuilder(ChatColor.RED + "Your connection to " + e.getKickedFrom().getName() + " was interrupted. You have been connected to: " + e.getCancelServer().getName()).color(ChatColor.RED).create());
     }
 }
